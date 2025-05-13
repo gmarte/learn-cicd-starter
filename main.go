@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
@@ -20,7 +21,12 @@ import (
 type apiConfig struct {
 	DB *database.Queries
 }
-
+const (
+	defaultReadHeaderTimeout = 15 * time.Second
+	defaultReadTimeout       = 1 * time.Minute
+	defaultWriteTimeout      = 2 * time.Minute
+	defaultIdleTimeout       = 2 * time.Minute
+)
 //go:embed static/*
 var staticFiles embed.FS
 
@@ -91,6 +97,10 @@ func main() {
 	srv := &http.Server{
 		Addr:    ":" + port,
 		Handler: router,
+		ReadHeaderTimeout: defaultReadHeaderTimeout,
+		ReadTimeout:       defaultReadTimeout,       // G112 (implicitly related)
+		WriteTimeout:      defaultWriteTimeout,      // Good practice
+		IdleTimeout:       defaultIdleTimeout,       // Good practice
 	}
 
 	log.Printf("Serving on port: %s\n", port)
