@@ -1,7 +1,7 @@
 // internal/auth/auth_test.go
-//package auth
+package auth
 
-//import (
+import (
 	"errors"
 	"net/http"
 	"testing"
