@@ -21,12 +21,14 @@ import (
 type apiConfig struct {
 	DB *database.Queries
 }
+
 const (
 	defaultReadHeaderTimeout = 15 * time.Second
 	defaultReadTimeout       = 1 * time.Minute
 	defaultWriteTimeout      = 2 * time.Minute
 	defaultIdleTimeout       = 2 * time.Minute
 )
+
 //go:embed static/*
 var staticFiles embed.FS
 
@@ -95,12 +97,12 @@ func main() {
 
 	router.Mount("/v1", v1Router)
 	srv := &http.Server{
-		Addr:    ":" + port,
-		Handler: router,
+		Addr:              ":" + port,
+		Handler:           router,
 		ReadHeaderTimeout: defaultReadHeaderTimeout,
-		ReadTimeout:       defaultReadTimeout,       // G112 (implicitly related)
-		WriteTimeout:      defaultWriteTimeout,      // Good practice
-		IdleTimeout:       defaultIdleTimeout,       // Good practice
+		ReadTimeout:       defaultReadTimeout,  // G112 (implicitly related)
+		WriteTimeout:      defaultWriteTimeout, // Good practice
+		IdleTimeout:       defaultIdleTimeout,  // Good practice
 	}
 
 	log.Printf("Serving on port: %s\n", port)
